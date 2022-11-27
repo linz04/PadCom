@@ -1,5 +1,5 @@
 # Laporan Akhir Projek
-- **KOM330-R1** Pemrograman Sistem Berorientasi Objek
+- **KOM330-R1** Manajemen Proyek Perangkat Lunak
 - Kelompok 5
 
 ## Asisten Praktikum
@@ -64,6 +64,16 @@ Saat ini, membuat catatan tidak lagi memerlukan kertas sebagai media tulis melai
 # Diagram
 ## Use Case Diagram
 ![PADCOM USE CASE DIAGRAM](https://user-images.githubusercontent.com/66372277/204142422-4b69e81b-638b-414e-ad59-342f17d8fbaa.png)
+
+## Project Documentations 
+### Trello 
+[*click here*](https://ipb.link/trello-padcom)
+
+### Figma 
+[*click here*](https:/ipb.link/figma-padcom)
+
+### Github 
+[*click here*](https://ipb.link/github-padcom)
 
 ## Ucapan Terima Kasih
 Puji syukur kami panjatkan kepada Allah SWT atas rahmat-Nya yang telah membuat kelompok kami dapat menyelesaikan pembuatan aplikasi berbasis web bernama Padcom dari mata kuliah Manajemen Proyek Perangkat Lunak (KOM330). Ucapan terima kasih juga kami sampaikan kepada semua pihak yang memberi kami kesempatan dan selalu membantu kami dalam pembuatan aplikasi Padcom, diantaranya:
