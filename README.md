@@ -1,6 +1,6 @@
 # Laporan Akhir Projek
-- **KOM334-P1** Pemrograman Sistem Berorientasi Objek
-- Kelompok 4
+- **KOM330-R1** Pemrograman Sistem Berorientasi Objek
+- Kelompok 5
 
 ## Asisten Praktikum
 - Emilia
@@ -49,7 +49,7 @@
     </tbody>
 </table> 
 
-# Logo
+## Logo
 ![padcom](https://user-images.githubusercontent.com/66372277/204142300-2b0fc0c8-a84f-4d7e-92c1-f8f099d26034.png)
 
 # PadCom
@@ -61,3 +61,16 @@ Notepad + Compiler
 Saat ini, membuat catatan tidak lagi memerlukan kertas sebagai media tulis melainkan dengan cara digital. Penggunaan catatan digital ini dapat mendukung kegiatan go green dengan mengurangi penggunaan kertas, memudahkan seseorang untuk mengakses catatan dimana saja, dan lebih praktis. Manfaat tersebut juga dirasakan di berbagai kalangan. Salah satunya mahasiswa atau orang-orang yang bekerja di bidang IT. Dalam membuat kode pemrograman seringkali seseorang mencantumkan banyak comment di setiap baris kode. Sehingga, hal tersebut cenderung membuat kode program semakin panjang atau bahkan memperbesar peluang terjadinya penulisan kesalahan tanda baca yang membuat program menjadi error.</p>
 <p>Umumnya aplikasi catatan digital lain hanya dapat digunakan untuk menulis atau membuat catatan sederhana saja. Oleh karena itu, adanya PadCom diharapkan dapat membantu seseorang dalam membuat catatan serta menyimpan, mengunduh dan juga mengeksekusi kode pemrograman mereka dengan menggunakan bahasa pemrograman C.</p>
 
+# Diagram
+## Use Case Diagram
+![PADCOM USE CASE DIAGRAM](https://user-images.githubusercontent.com/66372277/204142422-4b69e81b-638b-414e-ad59-342f17d8fbaa.png)
+
+## Ucapan Terima Kasih
+Puji syukur kami panjatkan kepada Allah SWT atas rahmat-Nya yang telah membuat kelompok kami dapat menyelesaikan pembuatan aplikasi berbasis web bernama Padcom dari mata kuliah Manajemen Proyek Perangkat Lunak (KOM330). Ucapan terima kasih juga kami sampaikan kepada semua pihak yang memberi kami kesempatan dan selalu membantu kami dalam pembuatan aplikasi Padcom, diantaranya:
+<br>
+- Bapak/Ibu Dosen Ilmu Komputer IPB University
+- Kakak Asisten Praktikum MPPL
+</br>
+Selama pembuatan aplikasi ini, kami mendapatkan banyak pengalaman dan ilmu yang dapat membangun kami menjadi lebih baik di masa yang akan datang. Mohon maaf atas segala kekurangan dari kelompok kami. Semoga laporan yang kelompok kami buat bermanfaat bagi semua pihak.
+
+> *Sincerely, Padcom Team.*
