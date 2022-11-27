@@ -50,7 +50,7 @@
 </table> 
 
 # Logo
-< img src="![padcom](https://user-images.githubusercontent.com/66372277/204142300-2b0fc0c8-a84f-4d7e-92c1-f8f099d26034.png)">
+![padcom](https://user-images.githubusercontent.com/66372277/204142300-2b0fc0c8-a84f-4d7e-92c1-f8f099d26034.png)
 
 # PadCom
 Notepad + Compiler
