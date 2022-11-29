@@ -1,0 +1,235 @@
+body {
+  margin: 0;
+  font-family: "Lucida Grande";
+}
+
+a {
+  text-decoration: none;
+}
+
+.clear {
+  clear: left;
+}
+
+.container {
+  max-width: 1170px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+header {
+  height: 65px;
+  width: 100%;
+  background-color:rgba(34, 33, 44, 0.9);
+  position :fixed;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  width: 124px;
+  margin-top: 15px;
+}
+
+.header-left {
+  float: left;
+}
+
+.header-right {
+  float: right;
+  margin-right: -25px;
+}
+
+.header-right a {
+  line-height: 65px;
+  padding: 0 25px;
+  color: white;
+  display: block;
+  float: left;
+  transition: all 0.5s;
+}
+
+.header-right a:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#profile {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 60px;
+  top: 30px;
+}
+
+.box1{
+    position: absolute;
+    width: 1164px;
+    height: 500px;
+    left: 98px;
+    top: 105px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+.box2{
+    position: absolute;
+    width: 293px;
+    height: 500px;
+    left: 0px;
+    top: 0px;
+
+    background: #C5DFF1;
+    border-radius: 12px 0px 0px 12px;
+  }
+
+#user-profile{
+    position: absolute;
+    width: 105px;
+    height: 105px;
+    left: 85px;
+    top: 50px;
+}
+
+.prl{
+    position: absolute;
+    width: 294px;
+    height: 48px;
+    left: 0px;
+    top: 220px;
+    font-family: Roboto;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #000000;
+}
+
+.stg{
+    position: absolute;
+    width: 293px;
+    height: 48px;
+    left: 0px;
+    top: 268px;
+    color: #000000;
+    font-family: Roboto;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    background: #FFFFFF;
+}
+
+.title{
+    position: absolute;
+    width: 356px;
+    height: 68px;
+    left: 410px;
+    top: 50px;
+
+    font-family: Roboto;
+    font-size: 30px;
+    line-height: 35px;
+}
+
+.line{
+    position: absolute;
+    width: 740px;
+    height: 0px;
+    left: 355px;
+    top: 120px;
+    border: 1px solid #000000;
+}
+
+.nama{
+    position: absolute;
+    left: 355px;
+    top: 160px;
+    font-family: Roboto;
+    font-size: 18px;
+}
+.input1{
+    position: absolute;
+    width: 300px;
+    height: 31px;
+    left: 795px;
+    top: 160px;
+    padding: 10px;
+    background: #FFFFFF;
+    border: 1px solid #C6D4D7;
+    box-sizing: border-box;
+}
+.input1:focus{
+    outline: 1px solid #53B2F2;
+} 
+.uname{
+    position: absolute;
+    left: 355px;
+    top: 215px;
+    font-family: Roboto;
+    font-size: 18px;
+}
+.input2{
+    position: absolute;
+    width: 300px;
+    height: 31px;
+    left: 795px;
+    top: 215px;
+    padding: 10px;
+    background: #FFFFFF;
+    border: 1px solid #C6D4D7;
+    box-sizing: border-box;
+}
+.input2:focus{
+    outline: 1px solid #53B2F2;
+} 
+.uemail{
+    position: absolute;
+    left: 355px;
+    top: 270px;
+    font-family: Roboto;
+    font-size: 18px;
+}
+.input3{
+    position: absolute;
+    width: 300px;
+    height: 31px;
+    left: 795px;
+    top: 270px;
+    padding: 10px;
+    background: #FFFFFF;
+    border: 1px solid #C6D4D7;
+    box-sizing: border-box;
+}
+.input3:focus{
+  outline: 1px solid #53B2F2;
+} 
+
+.button-submit:hover{
+    background : #309BE4;
+}
+.button-submit{
+    position: absolute;
+    left: 987px;
+    top: 350px;
+    bottom: 20px;
+    width: 108px;
+    height: 41px;
+    background: #53B2F2;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-family: Roboto;
+   }
+.button-submit:focus{
+    outline: none;
+}

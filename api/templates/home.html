@@ -1,21 +1,91 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Online C Compiler</title>
-</head>
-<body>
-	<form action="/submit" method="post">
-		<label for="code">Type your code here:</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label for="output">This is the output.</label><br>
-
-		<textarea id="code" name="code" rows="30" cols="50" style="resize:none" required placeholder="//Enter your code here.">{{code}}</textarea>
-		<textarea id="output" name="output" rows="30" cols="50" style="resize:none" placeholder="//Your output here.">{{output}}</textarea><br>
-		
-		<label for="input">Enter your input:</label><br>
-		<textarea id="input" name="input" rows="5" cols="50" style="resize:none" placeholder="//Your Input here.">{{input}}</textarea>
-		<input type="checkbox" name="check" id="GFG" 
-                    value="1" {{check}}>Enable input<br> 
-		
-		<button type="submit">Run Code</button>
-</form>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padcom</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home-stylesheet.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-left">
+          <img class="logo" src="{{ url_for('static', filename='images/padcom.png') }}">
+        </div>
+        <!-- Tambahkan ikon menu disini -->
+        <div class="header-left">
+          <span class="fa fa-bars menu-icon"></span>
+        </div>
+        <div class="header-right">
+          <a href="sign-up.html">Sign up</a>
+          <a href="login.html" class="login">Sign in</a>
+        </div>
+      </div>
+    </header>
+     <div class="top-wrapper">
+      <div class="container">
+        <h1>PADCOM</h1>
+        <h1>MEMBUAT CATATAN DIGITAL</h1>
+        <p>Padcom adalah platform online untuk membuat catatan dan compiler online.</p>
+        <p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+        <div class="btn-wrapper">
+          <a href="sign-up.html" class="btn signup">Daftar</a>
+        </div>
+      </div>
+    </div>
+    <div class="lesson-wrapper">
+      <div class="container">
+        <div class="heading">
+          <h2>Keunggulan menggunakan Padcom</h2>
+        </div>
+        <div class="lessons">
+          <div class="lesson">
+            <div class="lesson-icon">
+              <img src="https://prog-8.com/images/html/advanced/html.png">
+               <p>Mudah</p>
+            </div>
+             <p class="text-contents">Mudah digunakan untuk membuat dan mengeksekusi pemrograman Anda. </p>
+          </div>
+          <div class="lesson">
+            <div class="lesson-icon">
+              <img src="https://prog-8.com/images/html/advanced/jQuery.png">
+              <p>Lalala</p>
+            </div>
+            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+          </div>
+          <div class="lesson">
+            <div class="lesson-icon">
+              <img src="https://prog-8.com/images/html/advanced/ruby.png">
+              <p>Dipsy</p>
+            </div>
+            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+          </div>
+          <div class="lesson">
+            <div class="lesson-icon">
+              <img src="https://prog-8.com/images/html/advanced/php.png">
+              <p>Pooh</p>
+            </div>
+            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="message-wrapper">
+      <div class="container">
+        <div class="heading">
+          <h2>Apakah anda siap untuk menjadi lalalalalalalalalalala?</h2>
+          <h3>Ayo mulai mencatat, ayo belajar menjadi lebih kreatif!</h3>
+        </div>
+        <span class="btn message">Mulai Catat</span>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <img src="{{ url_for('static', filename='images/padcom.png') }}">
+        <p>Lorem ipsum lorem ipsum lorem ipsum.</p>
+      </div>
+    </footer>
+  </body>
 </html>
