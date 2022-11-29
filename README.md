@@ -38,7 +38,7 @@
       <td>4</td>
       <td>Yuritma Dwi Ardita Putri</td>
       <td>G64190048</td>
-      <td>Quality Assessment</td>
+      <td>Quality Assurance</td>
     </tr>
     <tr>
       <td>5</td>
