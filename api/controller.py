@@ -5,8 +5,10 @@ from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.utils import secure_filename
 import MySQLdb.cursors
 import subprocess,os
+from markupsafe import Markup
 from subprocess import PIPE
 import db
+import uuid
 
 
 @app.route('/logout')
@@ -35,7 +37,7 @@ def login_handler():
 				flash(msg)
 				cursor.close()
 				mysql.close()
-				return redirect(url_for('home'))
+				return redirect(url_for('dashboard'))
 			else:
 				flash("Wrong username or password!")
 				cursor.close()
@@ -89,10 +91,48 @@ def submit():
 		else:
 			check = 'checked'	
 
-		output=complier_output(code,inp,chk)	
-	return render_template('home.html',code=code, input=inp, output=output, check=check)
+		output=complier_output(code,inp,chk)
+	return render_template('code.html',code=code, input=inp, output=output, check=check)
+
+@app.route("/api/notes", methods=["GET", "POST"])
+def notes_handler():
+	if request.method == "POST":
+		mysql = db.connect()
+		uid = uuid.uuid4().hex
+		title = request.form["title"]
+		notes = request.form['notes']
+		out = Markup(notes)
+		print("Notes: ", out, flush=True)
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('INSERT INTO notes VALUES (NULL, %s, %s, %s, 0)', (session['id'], password, fullname, ))
+		return render_template("note.html", output=out, notes=notes, title=title)
+
+@app.route("/note")
+def note_gen():
+	uid = uuid.uuid4().hex
+	return redirect(url_for('note_view', uuid=uid))
+
+@app.route("/note/<uuid>", methods=["POST", "GET"])
+def note_view(uuid):
+	if request.method == "POST":
+		mysql = db.connect()
+		title = request.form["title"]
+		notes = request.form['notes']
+		user_id = f"[{int(session['id'])}]"
+		out = Markup(notes)
+		print("Notes: ", out, flush=True)
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('INSERT INTO notes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, notes, title, notes, ))
+		mysql.commit()
+		cursor.close()
+		mysql.close()
+		return render_template("note.html", output=out, notes=notes, title=title)
+	else:
+		return render_template("note.html")
+
 
 def complier_output(code,inp,chk):
+	print("user_id: ", session['id'], flush=True)
 	if not os.path.exists('code/Try.c'):
 		os.open('code/Try.c', os.O_CREAT)	
 	fd = os.open("code/Try.c", os.O_WRONLY)

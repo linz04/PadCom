@@ -18,8 +18,8 @@
           <span class="fa fa-bars menu-icon"></span>
         </div>
         <div class="header-right">
-          <a href="sign-up.html">Sign up</a>
-          <a href="login.html" class="login">Sign in</a>
+          <a href="{{ url_for('register') }}">Sign up</a>
+          <a href="{{ url_for('login') }}" class="login">Sign in</a>
         </div>
       </div>
     </header>
@@ -28,7 +28,7 @@
         <h1>PADCOM</h1>
         <h1>MEMBUAT CATATAN DIGITAL</h1>
         <p>Padcom adalah platform online untuk membuat catatan dan compiler online.</p>
-        <p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+        <p>Teman baik bagi pelajar dan mahasiswa</p>
         <div class="btn-wrapper">
           <a href="sign-up.html" class="btn signup">Daftar</a>
         </div>
@@ -37,36 +37,36 @@
     <div class="lesson-wrapper">
       <div class="container">
         <div class="heading">
-          <h2>Keunggulan menggunakan Padcom</h2>
+          <h2>Padcom Features</h2>
         </div>
         <div class="lessons">
           <div class="lesson">
             <div class="lesson-icon">
               <img src="https://prog-8.com/images/html/advanced/html.png">
-               <p>Mudah</p>
+               <p>Write</p>
             </div>
-             <p class="text-contents">Mudah digunakan untuk membuat dan mengeksekusi pemrograman Anda. </p>
+             <p class="text-contents">Buat catatan digital semau Anda</p>
           </div>
           <div class="lesson">
             <div class="lesson-icon">
               <img src="https://prog-8.com/images/html/advanced/jQuery.png">
-              <p>Lalala</p>
+              <p>Compile</p>
             </div>
-            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+            <p class="text-contents">Compile kode pemrograman Anda dengan mudah</p>
           </div>
           <div class="lesson">
             <div class="lesson-icon">
               <img src="https://prog-8.com/images/html/advanced/ruby.png">
-              <p>Dipsy</p>
+              <p>Collaboration</p>
             </div>
-            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+            <p class="text-contents">Bagikan catatan Anda dengan tim Anda dan mulai kerja bersama-sama</p>
           </div>
           <div class="lesson">
             <div class="lesson-icon">
               <img src="https://prog-8.com/images/html/advanced/php.png">
-              <p>Pooh</p>
+              <p>Download</p>
             </div>
-            <p class="text-contents">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.</p>
+            <p class="text-contents">Kerjakan catatan Anda dimana saja dan kapan saja dengan fitur download</p>
           </div>
           <div class="clear"></div>
         </div>
@@ -75,7 +75,7 @@
     <div class="message-wrapper">
       <div class="container">
         <div class="heading">
-          <h2>Apakah anda siap untuk menjadi lalalalalalalalalalala?</h2>
+          <h2>Are you ready to become the best student?</h2>
           <h3>Ayo mulai mencatat, ayo belajar menjadi lebih kreatif!</h3>
         </div>
         <span class="btn message">Mulai Catat</span>
@@ -84,7 +84,7 @@
     <footer>
       <div class="container">
         <img src="{{ url_for('static', filename='images/padcom.png') }}">
-        <p>Lorem ipsum lorem ipsum lorem ipsum.</p>
+        <p>Teman baik bagi pelajar dan mahasiswa</p>
       </div>
     </footer>
   </body>

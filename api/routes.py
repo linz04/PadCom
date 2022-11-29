@@ -11,6 +11,14 @@ def login():
 def register():
 	return render_template('sign-up.html')
 
-@app.route("/home")
+@app.route("/dashboard")
+def dashboard():
+	return render_template("homelogin.html")
+
+@app.route("/")
 def home():
 	return render_template("home.html")
+
+@app.route("/code")
+def code():
+	return render_template("code.html")
