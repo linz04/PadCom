@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padcom</title>
+    <link rel="stylesheet" href="note-stylesheet.css">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+	  <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <script src="ckeditor/ckeditor.js"></script>
+  </head>
+  <body>
+  	<header>
+      <div class="container">
+        <div class="header-left">
+          <img class="logo" src="pictures\padcom.png">
+        </div>
+        <div class="header-left">
+          <span class="fa fa-bars menu-icon"></span>
+        </div>
+        <div class="header-right">
+          <a href="home.html">Home</a>
+        </div>
+      </div>
+    </header>
+    <div class="box">
+      <div class="container-button">
+        <button id="blue">Blue</button>
+        <button id="purple">Purple</button>
+        <button id="orange">Orange</button>
+      </div>
+    </div>
+    <div class="title">
+      <h1>Manajemen Proyek Perangkat Lunak</h1> <!--tergantung title notes-->
+    </div>
+    <div class="box-option">
+      <button type="submit" id="submit" name="submit" class="button-submit"><b>SAVE</b></button>
+      <button onclick="muncul()" id="share" class="iconify" data-inline="false" data-icon="mdi:account-multiple-plus" style="font-size: 30px; float:right; margin-right: 30px; cursor: pointer; color: #000000;"></button>
+      <button class="iconify" data-inline="false" data-icon="ic:outline-file-download" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
+      <button onclick="on()" class="iconify" data-inline="false" data-icon="mingcute:delete-2-line" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
+    </div>
+    <div class="box-notes">
+      <textarea id="notes" name="editor1" style=" max-width: 800px; " placeholder="Write here..."></textarea>
+      <script>
+        CKEDITOR.replace( 'editor1' );
+        config.resize_enabled = false;
+        config.removePlugins = 'resize';
+      </script>
+    </div>
+    <!--<div class="box-code">
+        <p>Your Note</p>
+    </div>
+      <form>
+        <div class="code">
+          <textarea type="text" id="code" name="code1" style="font-family: 'consolas'; font-size: 20px; padding: 20px; width: 1200px;height:750px;border-radius: 0px 0px 5px 5px;" placeholder="Write here..."></textarea>
+          <script> CKEDITOR.replace( 'code1' ); </script>
+        </div>
+      </form>
+    </div> -->
+    <div id="overlay">
+        <div class="share-overlay">
+          <p class="collab">Add Collaborator</p>
+          <input class="email" id="email" name="email" type="email" style="border:none; background-color:#E5EAED; position: absolute; width: 370px; height: 35px; left: 30px; top: 85px;">
+        <form>  <button class="yes" id="yes-button"><b>SAVE</b></button></form>
+        <button onclick="tutup()" class="iconify" data-inline="false" data-icon="radix-icons:cross-2" style="font-size: 35px; float:right; margin-right: 10px; margin-top: 10px; cursor: pointer; color: #000000;"></button>
+        </div>
+    </div>
+    <div id="overlay1">
+        <div class="delete-overlay">
+          <div class="sure-delete">You are about sure to delete this code.
+          <p>Are you sure?</p></div>
+        <form><button class="yes" id="yes-delete"><b>YES</b></button></form>
+          <button onclick="off()" class="no" id="no-delete"><b>NO</b></button>
+        </div>
+    </div>            
+  <footer>
+      <div class="container-foot">
+        <p>Shared With:</p>
+        <p>wikafauziah@apps.ipb.ac.id</p>
+      </div>
+  </footer>
+  <script>
+    const blueBtn = document.querySelector('#blue');
+    const purpleBtn = document.querySelector('#purple');
+    const orangeBtn = document.querySelector('#orange');
+
+    blueBtn.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--first-color', '#C5DFF1');
+      document.documentElement.style.setProperty('--sec-color', '#242362');
+      document.documentElement.style.setProperty('--third-color', '#E9F6FF');
+    });
+    purpleBtn.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--first-color', '#AA7DC1');
+      document.documentElement.style.setProperty('--sec-color', '#401059');
+      document.documentElement.style.setProperty('--third-color', '#F0D2FF');
+    });
+    orangeBtn.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--first-color', '#EEC373');
+      document.documentElement.style.setProperty('--sec-color', '#5E3A11');
+      document.documentElement.style.setProperty('--third-color', '#FFF4DF');
+    });         
+  </script>
+  <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+  <script>
+    function muncul() {
+    document.getElementById("overlay").style.display = "block";
+    }
+
+    function tutup() {
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script> 
+  <script>
+    function on() {
+    document.getElementById("overlay1").style.display = "block";
+    }
+
+    function off() {
+      document.getElementById("overlay1").style.display = "none";
+    }
+  </script>
+  </body>
+</html>
