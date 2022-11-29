@@ -7,7 +7,7 @@ services:
       - .:/application
       - ./database/db.sql:/docker-entrypoint-initdb.d/db.sql
     ports:
-      - "3307:3306"
+      - "3306:3306"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=REDACTED
