@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Padcom</title>
-    <link rel="stylesheet" href="homelogin.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homelogin.css') }}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   </head>
   <body>
     <header>
       <div class="container">
         <div class="header-left">
-          <img class="logo" src="padcom.png">
+          <img class="logo" src="{{ url_for('static', filename='images/padcom.png') }}">
         </div>
         <!-- Tambahkan ikon menu disini -->
         <div class="header-left">
@@ -24,13 +24,13 @@
         <h1>PADCOM</h1>
         <h1>MEMBUAT CATATAN DIGITAL</h1>
         <div class="btn-wrapper">
-          <a href="note.html" class="btn signup">Add New Notes</a>
+          <a href="{{ url_for('note_gen') }}" class="btn signup">Add New Notes</a>
         </div>
       </div>
     </div>
     <footer>
       <div class="container">
-        <img src="pictures\padcom.png">
+        <img src="{{ url_for('static', filename='images/padcom.png') }}">
         <p>Teman baik bagi pelajar dan mahasiswa</p>
       </div>
     </footer>
