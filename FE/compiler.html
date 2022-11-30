@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
+<head>
+	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Padcom</title>
     <link rel="stylesheet" href="compiler-stylesheet.css">
-    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
-  <link rel="icon" href="img/logo.png" type="image/x-icon">
-  </head>
-  <body>
-    <header>
+	<title>Online C Compiler</title>
+</head>
+<body>
+	<header>
       <div class="container">
         <div class="header-left">
           <img class="logo" src="pictures\padcom.png">
@@ -29,158 +28,66 @@
         <button id="orange">Orange</button>
       </div>
     </div>
-    <div class="title">
-      <h1>Ayam Goreng</h1> <!--tergantung title notes-->
-    </div>
-      <div class="box-option">
-          <button onclick="save()" type="submit" id="submit" name="submit" class="button-submit"><b>SAVE</b></button></form>
-          <button onclick="muncul()" id="share" class="iconify" data-inline="false" data-icon="mdi:account-multiple-plus" style="font-size: 30px; float:right; margin-right: 30px; cursor: pointer; color: #000000;"></button>
-          <button onclick="download()" class="iconify" data-inline="false" data-icon="ic:outline-file-download" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
-          <button onclick="on()" class="iconify" data-inline="false" data-icon="mingcute:delete-2-line" style="font-size: 28px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
-          <button onclick="run()" class="iconify" data-inline="false" data-icon="ic:round-play-arrow" style="font-size: 35px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
-      </div>
-      <div class="boxes">
-        <div class="box-code">
-          <p>Your Code</p>
-        </div>
-        <div class="box-output">
-          <p>Output</p>
-        </div>
-      </div>
-        <form>
-          <div class="code">
-            <textarea type="text" id="code" name="code" placeholder="Write your code here" style="float:left; font-family: 'consolas'; font-size: 20px; padding: 20px; width: 658px;height:750px;border-radius: 0px 0px 5px 5px;"></textarea>
-          </div>
-          <div class="output">
-            <textarea type="text" id="output" name="output" style="float: right; font-family: 'consolas'; font-size: 20px; padding: 20px; width: 538px; height: 750px; border-radius: 0px 0px 5px 5px;"></textarea></div>
-          <div class="box-input" style="padding-bottom: 50px;">
-          <label for="input" style="font-size:20px; margin-left: 30px;"> Need an input?
-            <input id="otherCheckbox" type="checkbox" onclick="EnableDisableTextbox(this)" style="margin-top:40px; width: 20px; height: 20px; font-size:40px;">
-          </label>
-          <br>
-          <input type="text" id="txtinput" name="txtinput"  disabled="disabled" placeholder="Write your input here" style="width: 680px; height: 50px; margin-top: 10px; margin-left: 30px; font-family: 'consolas'; font-size: 18px; padding:10px; border-radius: 5px;" />
-          </div>
-        </form>
-    <div id="overlay">
-        <div class="share-overlay">
-          <p class="collab">Add Collaborator</p>
-          <input class="email" id="email" name="email" type="email" style="border:none; background-color:#E5EAED; position: absolute; width: 370px; height: 35px; left: 30px; top: 85px;">
-          <button onclick="collab()" class="yes" id="yes-button"><b>SAVE</b></button></form>
-          <button onclick="tutup()" class="iconify" data-inline="false" data-icon="radix-icons:cross-2" style="font-size: 35px; float:right; margin-right: 10px; margin-top: 10px; cursor: pointer; color: #000000;"></button>
-        </div>
-      </div>
-      <div id="overlay1">
-        <div class="delete-overlay">
-          <div class="sure-delete">You are about sure to delete this code.
-          <p>Are you sure?</p></div>
-          <button onclick="hapus()" class="yes" id="yes-delete"><b>YES</b></button>
-          <button onclick="off()" class="no" id="no-delete"><b>NO</b></button>
-        </div>
-      </div>
-  <footer>
-      <div class="container-foot">
-        <p>Shared With:</p>        <!--tergantung-->
-        <p>wikafauziah@apps.ipb.ac.id</p>
-      </div>
-  </footer>
-  <script>
-    const blueBtn = document.querySelector('#blue');
-    const purpleBtn = document.querySelector('#purple');
-    const orangeBtn = document.querySelector('#orange');
+	<form action="/api/submit" method="post">
+		<div class="title">
+      		<h1>Manajemen Proyek Perangkat Lunak</h1> <!--tergantung title notes-->
+    	</div>
+		<label for="code" class="box-code">
+	        <p>Your Code</p>
+	    </label>
+		<textarea id="code" name="code" rows="30" cols="50" style="resize:none; float:left; width: 678px; height: 875px; font-family: 'consolas'; font-size: 18px; padding:10px; border-radius: 0px 0px 5px 5px;" required placeholder="//Enter your code here.">{{code}}</textarea>
+		<label for="input" class="box-input">
+			<p>Input</p>
+		</label>
+		<textarea id="input" name="input" rows="5" cols="50" disabled="disabled" style="resize:none; float: right; font-family:'consolas'; font-size: 20px; padding: 10px; width: 557px; height: 200px; border-radius: 0px 0px 5px 5px;" placeholder="//Your Input here."></textarea>
+		<div class="input" style="float: right; font-family: 'consolas'; font-size: 20px; margin-right:30px; margin-top: 10px;">
+			<input type="checkbox" name="check" id="check" 
+			       onclick="EnableDisableTextbox(this)">Enable input
+		</div>
+		<input type="submit" name="action" value="Run" class="button-run" style="margin-top: 50px; margin-right: 20px; margin-left:360px; "></input>
+		<input type="submit" name="action" value="Save" class="button-submit" style="margin-top: 50px;"></input>
+	</form>
+		<label for="output" class="box-output">
+			<p>Output</p>
+		</label>
+		<textarea id="output" name="output" rows="30" cols="50" style="resize:none; float:right; font-family:'consolas'; font-size: 20px; padding: 10px; width: 557px; height: 500px; border-radius: 0px 0px 5px 5px;" placeholder="//Your output here."></textarea><br>
+	<form action="/api/share" method="post">
+		<label for="share" style="float:left; margin-left: 30px; margin-bottom: 30px;">
+			<p style="font-family:'Consolas'; font-size: 22px;">Share<p>
+		</label>
+		<input id="share" name="share" type="email" style="float:left; border-radius: 5px; width: 300px; height: 20px; padding: 5px; background:var(--third-color); "></input>
+		<button class="button-share" type="submit" style="float:right;">Share</button>
+	</form>
 
-    blueBtn.addEventListener('click', () => {
-      document.documentElement.style.setProperty('--first-color', '#C5DFF1');
-      document.documentElement.style.setProperty('--sec-color', '#242362');
-      document.documentElement.style.setProperty('--third-color', '#E9F6FF');
-    });
-    purpleBtn.addEventListener('click', () => {
-      document.documentElement.style.setProperty('--first-color', '#AA7DC1');
-      document.documentElement.style.setProperty('--sec-color', '#401059');
-      document.documentElement.style.setProperty('--third-color', '#F0D2FF');
-    });
-    orangeBtn.addEventListener('click', () => {
-      document.documentElement.style.setProperty('--first-color', '#EEC373');
-      document.documentElement.style.setProperty('--sec-color', '#5E3A11');
-      document.documentElement.style.setProperty('--third-color', '#FFF4DF');
-    });         
-  </script>
-  <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
-  <script type="text/javascript">
-    function EnableDisableTextbox(otherCheckbox){
-      var txtinput = document.getElementById("txtinput");
-      txtinput.disabled = otherCheckbox.checked ? false : true;
-      if(!txtinput.disabled){
-        txtinput.focus();
-      }
-    } 
-  </script>
-  <script>
-    function muncul() {
-    document.getElementById("overlay").style.display = "block";
-    }
+	<script>
+	    const blueBtn = document.querySelector('#blue');
+	    const purpleBtn = document.querySelector('#purple');
+	    const orangeBtn = document.querySelector('#orange');
 
-    function tutup() {
-      document.getElementById("overlay").style.display = "none";
-    }
-  </script> 
-  <script>
-    function on() {
-    document.getElementById("overlay1").style.display = "block";
-    }
-
-    function off() {
-      document.getElementById("overlay1").style.display = "none";
-    }
-  </script>
-  <script>
-    function save () {
-      var form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', '');
-      form.style.display = 'hidden';
-      document.body.appendChild(form)
-      form.submit();
-    }
-  </script>
-  <script>
-    function download () {
-      var form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', 'download');
-      form.style.display = 'hidden';
-      document.body.appendChild(form)
-      form.submit();
-    }
-  </script>
-  <script>
-    function run () {
-      var form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', 'run');
-      form.style.display = 'hidden';
-      document.body.appendChild(form)
-      form.submit();
-    }
-  </script>
-  <script>
-    function collab () {
-      var form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', 'collab');
-      form.style.display = 'hidden';
-      document.body.appendChild(form)
-      form.submit();
-    }
-  </script>
-  <script>
-    function hapus () {
-      var form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', 'hapus');
-      form.style.display = 'hidden';
-      document.body.appendChild(form)
-      form.submit();
-    }
-  </script>
-  </body>
+	    blueBtn.addEventListener('click', () => {
+	      document.documentElement.style.setProperty('--first-color', '#C5DFF1');
+	      document.documentElement.style.setProperty('--sec-color', '#242362');
+	      document.documentElement.style.setProperty('--third-color', '#E9F6FF');
+	    });
+	    purpleBtn.addEventListener('click', () => {
+	      document.documentElement.style.setProperty('--first-color', '#AA7DC1');
+	      document.documentElement.style.setProperty('--sec-color', '#401059');
+	      document.documentElement.style.setProperty('--third-color', '#F0D2FF');
+	    });
+	    orangeBtn.addEventListener('click', () => {
+	      document.documentElement.style.setProperty('--first-color', '#EEC373');
+	      document.documentElement.style.setProperty('--sec-color', '#5E3A11');
+	      document.documentElement.style.setProperty('--third-color', '#FFF4DF');
+	    });         
+	</script>
+	<script type="text/javascript">
+	    function EnableDisableTextbox(check){
+	      var input = document.getElementById("input");
+	      input.disabled = check.checked ? false : true;
+	      if(!input.disabled){
+	        input.focus();
+	      }
+	    } 
+  	</script>
+</body>
 </html>
