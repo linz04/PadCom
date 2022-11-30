@@ -28,9 +28,16 @@
         </div>
       </div>
     </div>
+    <table border="2" cellpadding="80">
+      <tr>
+        {% for item in res %}
+          <td bgcolor="orange"> <a href="/note/{{item['notes_id']}}"> {{item['title']}} </a></td>
+        {% endfor %}
+      </tr>
+  </table>
     <footer>
       <div class="container">
-        <img src="{{ url_for('static', filename='images/padcom.png') }}">
+        <img src="pictures\{{ url_for('static', filename='images/padcom.png') }}">
         <p>Teman baik bagi pelajar dan mahasiswa</p>
       </div>
     </footer>

@@ -36,7 +36,7 @@ def codes_checker(user_id, uid):
 @app.route('/logout')
 def logout():
 	session.clear()
-	return redirect(url_for('login'))
+	return redirect(url_for('home'))
 
 @app.route("/api/login", methods = ["GET", "POST"])
 def login_handler():
@@ -53,8 +53,6 @@ def login_handler():
 				session['id'] = rv['id']
 				session['fullname'] = rv['fullname']
 				session['lecturer'] = rv['isLecturer']
-				msg = 'Logged in successfully !'
-				flash(msg)
 				cursor.close()
 				mysql.close()
 				return redirect(url_for('dashboard'))
@@ -110,52 +108,60 @@ def code_gen():
 
 @app.route('/code/<uuid>',methods=['GET','POST'])
 def codes_handler(uuid):
-	if request.method == 'POST':
-		mysql = db.connect()
-		code = request.form['code']
-		inp = request.form['input']
-		action = request.form['action']
-		user_id = f"[{int(session['id'])}]"
-		title = request.form['title']
-		if(action == "Run"):
-			chk = request.form.get('check')
-
-			if  not chk == '1':
-				inp = ""
-				check = ''
-			else:
-				check = 'checked'	
-
-			output=complier_output(code,inp,chk,uuid)
-			return render_template('code.html',code=code, input=inp, output=output, check=check, title=title, uid=uuid)
-		else:
-			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-			cursor.execute('INSERT INTO codes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, code, title, code, ))
-			mysql.commit()
-			cursor.close()
-			mysql.close()
-		return render_template("code.html", code=code, title=title, uid=uuid)
-	else:
-		#check if codes have owner or not
-		mysql = db.connect()
-		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT codes_id, title, content from codes where codes_id = %s', (uuid, ))
-		rv = cursor.fetchone()
-		print(rv, flush=True)
-		if(rv != None and codes_checker(session['id'], uuid) == True):
-			cursor.close()
-			mysql.close()
-			return render_template("code.html", code=rv['content'], title=rv['title'], uid=rv['codes_id'])
-		elif(rv == None):
-			#if no owner add owner
+	try:
+		if request.method == 'POST':
+			mysql = db.connect()
+			code = request.form['code']
+			try:
+				inp = request.form['input']
+				title = request.form['title']
+			except:
+				title = ""
+			action = request.form['action']
 			user_id = f"[{int(session['id'])}]"
-			cursor.execute('INSERT INTO codes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
-			mysql.commit()
-			cursor.close()
-			mysql.close()
-			return render_template("code.html", uid=uuid)
+			if(action == "Run"):
+				chk = request.form.get('check')
+
+				if  not chk == '1':
+					inp = ""
+					check = ''
+				else:
+					check = 'checked'	
+
+				output=complier_output(code,inp,chk,uuid)
+				return render_template('code.html',code=code, input=inp, output=output, check=check, title=title, uid=uuid)
+			else:
+				cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+				cursor.execute('INSERT INTO codes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, code, title, code, ))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+			return render_template("code.html", code=code, title=title, uid=uuid)
 		else:
-			return redirect(url_for('dashboard'))
+			if(session['loggedin'] == None):
+				return redirect(url_for('home'))
+			#check if codes have owner or not
+			mysql = db.connect()
+			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+			cursor.execute('SELECT codes_id, title, content from codes where codes_id = %s', (uuid, ))
+			rv = cursor.fetchone()
+			print(rv, flush=True)
+			if(rv != None and codes_checker(session['id'], uuid) == True):
+				cursor.close()
+				mysql.close()
+				return render_template("code.html", code=rv['content'], title=rv['title'], uid=rv['codes_id'])
+			elif(rv == None):
+				#if no owner add owner
+				user_id = f"[{int(session['id'])}]"
+				cursor.execute('INSERT INTO codes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+				return render_template("code.html", uid=uuid)
+			else:
+				return redirect(url_for('dashboard'))
+	except:
+		return redirect(url_for('home'))
 
 
 @app.route("/share-code/<uuid>", methods=["POST", "GET"])
@@ -216,47 +222,50 @@ def note_share(uuid):
 
 @app.route("/note/<uuid>", methods=["POST", "GET"])
 def notes_handler(uuid):
-	if request.method == "POST":
-		mysql = db.connect()
-		title = request.form["title"]
-		notes = request.form['notes']
-		action = request.form['action']
-		user_id = f"[{int(session['id'])}]"
-		out = Markup(notes)
-		print("Action: ", action, flush=True)
-		if(action == "Save"):
-			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-			cursor.execute('INSERT INTO notes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, notes, title, notes, ))
-			mysql.commit()
-			cursor.close()
-			mysql.close()
-		elif(action == "View"):
-			print("Masuk")
-			return redirect(url_for('notes_view', uuid=uuid))
-		elif(action == "Download"):
-			return redirect(url_for('notes_download', uuid=uuid))
-		return render_template("note.html", output=out, notes=notes, title=title, uid=uuid)
-	else:
-		#check if notes have owner or not
-		mysql = db.connect()
-		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT notes_id, title, content from notes where notes_id = %s', (uuid, ))
-		rv = cursor.fetchone()
-		if(rv != None and notes_checker(session['id'], uuid) == True):
-			out = Markup(rv['content'])
-			cursor.close()
-			mysql.close()
-			return render_template("note.html", output=out, notes=rv['content'], title=rv['title'], uid=rv['notes_id'])
-		elif(rv == None):
-			#if no owner add owner
+	try:
+		if request.method == "POST":
+			mysql = db.connect()
+			title = request.form["title"]
+			notes = request.form['notes']
+			action = request.form['action']
 			user_id = f"[{int(session['id'])}]"
-			cursor.execute('INSERT INTO notes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
-			mysql.commit()
-			cursor.close()
-			mysql.close()
-			return render_template("note.html", uid=uuid)
+			out = Markup(notes)
+			print("Action: ", action, flush=True)
+			if(action == "Save"):
+				cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+				cursor.execute('INSERT INTO notes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, notes, title, notes, ))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+			elif(action == "View"):
+				print("Masuk")
+				return redirect(url_for('notes_view', uuid=uuid))
+			elif(action == "Download"):
+				return redirect(url_for('notes_download', uuid=uuid))
+			return render_template("note.html", output=out, notes=notes, title=title, uid=uuid)
 		else:
-			return redirect(url_for('dashboard'))
+			#check if notes have owner or not
+			mysql = db.connect()
+			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+			cursor.execute('SELECT notes_id, title, content from notes where notes_id = %s', (uuid, ))
+			rv = cursor.fetchone()
+			if(rv != None and notes_checker(session['id'], uuid) == True):
+				out = Markup(rv['content'])
+				cursor.close()
+				mysql.close()
+				return render_template("note.html", output=out, notes=rv['content'], title=rv['title'], uid=rv['notes_id'])
+			elif(rv == None):
+				#if no owner add owner
+				user_id = f"[{int(session['id'])}]"
+				cursor.execute('INSERT INTO notes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+				return render_template("note.html", uid=uuid)
+			else:
+				return redirect(url_for('dashboard'))
+	except:
+		return redirect(url_for('home'))
 
 @app.route("/view/<uuid>")
 def notes_view(uuid):
