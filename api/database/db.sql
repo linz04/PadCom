@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `codes` (
-  `codes_id` int NOT NULL AUTO_INCREMENT,
+  `codes_id` char(32) NOT NULL,
   `user_id` json DEFAULT NULL,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `content` text,
   PRIMARY KEY (`codes_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

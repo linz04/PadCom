@@ -19,9 +19,6 @@ def dashboard():
 def home():
 	return render_template("home.html")
 
-@app.route("/code")
-def code():
-	return render_template("code.html")
 
 @app.route("/code2")
 def code2():

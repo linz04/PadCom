@@ -10,12 +10,23 @@ from subprocess import PIPE
 import db
 import uuid
 import pdfkit
+import pwd
 
 
 def notes_checker(user_id, uid):
 	mysql = db.connect()
 	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
 	cursor.execute(f"SELECT * FROM notes where user_id LIKE \"%{user_id}%\" AND notes_id = \"{uid}\"")
+	rv = cursor.fetchone()
+	if (rv is not None):
+		return True
+	else:
+		return False
+
+def codes_checker(user_id, uid):
+	mysql = db.connect()
+	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(f"SELECT * FROM codes where user_id LIKE \"%{user_id}%\" AND codes_id = \"{uid}\"")
 	rv = cursor.fetchone()
 	if (rv is not None):
 		return True
@@ -95,25 +106,85 @@ def note_gen():
 @app.route("/code")
 def code_gen():
 	uid = uuid.uuid4().hex
-	return redirect(url_for('notes_handler', uuid=uid))
+	return redirect(url_for('codes_handler', uuid=uid))
 
 @app.route('/code/<uuid>',methods=['GET','POST'])
-def code_handler(uuid):
+def codes_handler(uuid):
 	if request.method == 'POST':
-
+		mysql = db.connect()
 		code = request.form['code']
 		inp = request.form['input']
-		chk = request.form.get('check')
+		action = request.form['action']
+		user_id = f"[{int(session['id'])}]"
+		title = request.form['title']
+		if(action == "Run"):
+			chk = request.form.get('check')
 
-		if  not chk == '1':
-			inp = ""
-			check = ''
+			if  not chk == '1':
+				inp = ""
+				check = ''
+			else:
+				check = 'checked'	
+
+			output=complier_output(code,inp,chk,uuid)
+			return render_template('code.html',code=code, input=inp, output=output, check=check, title=title, uid=uuid)
 		else:
-			check = 'checked'	
+			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+			cursor.execute('INSERT INTO codes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, code, title, code, ))
+			mysql.commit()
+			cursor.close()
+			mysql.close()
+		return render_template("code.html", code=code, title=title, uid=uuid)
+	else:
+		#check if codes have owner or not
+		mysql = db.connect()
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT codes_id, title, content from codes where codes_id = %s', (uuid, ))
+		rv = cursor.fetchone()
+		print(rv, flush=True)
+		if(rv != None and codes_checker(session['id'], uuid) == True):
+			cursor.close()
+			mysql.close()
+			return render_template("code.html", code=rv['content'], title=rv['title'], uid=rv['codes_id'])
+		elif(rv == None):
+			#if no owner add owner
+			user_id = f"[{int(session['id'])}]"
+			cursor.execute('INSERT INTO codes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
+			mysql.commit()
+			cursor.close()
+			mysql.close()
+			return render_template("code.html", uid=uuid)
+		else:
+			return redirect(url_for('dashboard'))
 
-		output=complier_output(code,inp,chk)
-	return render_template('code.html',code=code, input=inp, output=output, check=check)
 
+@app.route("/share-code/<uuid>", methods=["POST", "GET"])
+def code_share(uuid):
+	if request.method == "POST":
+		email = request.form['email']
+		mysql = db.connect()
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute("SELECT id FROM user WHERE email=%s", (email,))
+		if cursor.rowcount == 1:
+			#check user already in code or not
+			rv = cursor.fetchone()
+			cursor.execute(f"SELECT * FROM codes where user_id LIKE \"%{rv['id']}%\" and codes_id = \"{uuid}\"")
+			if cursor.rowcount == 0:
+				cursor.execute("UPDATE codes SET user_id = JSON_ARRAY_INSERT(user_id, '$[0]', %s) where codes_id = %s", (rv['id'], uuid))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+				msg = f"Success invite user {email}"
+				flash(msg)
+				return redirect(url_for('codes_handler', uuid=uuid))
+			else:
+				flash("User already Invited!")
+				return redirect(url_for('codes_handler', uuid=uuid))
+		else:
+			cursor.close()
+			mysql.close()
+			flash("User Not Found!")
+			return redirect(url_for('codes_handler', uuid=uuid))
 
 @app.route("/share-note/<uuid>", methods=["POST", "GET"])
 def note_share(uuid):
@@ -212,22 +283,33 @@ def notes_download(uuid):
 
 
 
-def complier_output(code,inp,chk):
-	print("user_id: ", session['id'], flush=True)
-	if not os.path.exists('code/Try.c'):
-		os.open('code/Try.c', os.O_CREAT)	
-	fd = os.open("code/Try.c", os.O_WRONLY)
+def complier_output(code,inp,chk,name):
+	username = "nobody"
+	pwent = pwd.getpwnam(username)
+	uid = pwent.pw_uid
+	gid = pwent.pw_gid
+	folder = f"code/{name}"
+	path = folder+"/Try.c"
+	elf = folder+"/new"
+	if not os.path.exists(path):
+		os.makedirs(folder, mode=0o777)
+		os.open(path, os.O_CREAT)	
+	fd = os.open(path, os.O_WRONLY)
 	os.truncate(fd,0)
 	fileadd=str.encode(code)
 	os.write(fd,fileadd)
 	os.close(fd) 
-	s = subprocess.run(['gcc','-o','code/new','code/Try.c'], stderr=PIPE,)
+	os.chown(path, uid, gid)
+	s = subprocess.run(['gcc','-o',elf,path], stderr=PIPE,)
 	check = s.returncode
+	os.setgid(gid)
+	os.setuid(uid)
+	os.system('id')
 	if check == 0:
 		if chk == '1':
-			r = subprocess.run(["./code/new"], input=inp.encode(), stdout=PIPE)
+			r = subprocess.run([elf], input=inp.encode(), stdout=PIPE)
 		else:
-			r = subprocess.run(["./code/new"], stdout=PIPE)
+			r = subprocess.run([elf], stdout=PIPE)
 		return r.stdout.decode("utf-8")
 	else:
 		return s.stderr.decode("utf-8")
