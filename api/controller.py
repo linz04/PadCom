@@ -160,7 +160,8 @@ def codes_handler(uuid):
 				return render_template("code.html", uid=uuid)
 			else:
 				return redirect(url_for('dashboard'))
-	except:
+	except Exception as e:
+		print(e)
 		return redirect(url_for('home'))
 
 
@@ -293,35 +294,38 @@ def notes_download(uuid):
 
 
 def complier_output(code,inp,chk,name):
-	username = "nobody"
-	pwent = pwd.getpwnam(username)
-	uid = pwent.pw_uid
-	gid = pwent.pw_gid
-	folder = f"code/{name}"
-	path = folder+"/Try.c"
-	elf = folder+"/new"
-	if not os.path.exists(path):
-		os.makedirs(folder, mode=0o777)
-		os.open(path, os.O_CREAT)	
-	fd = os.open(path, os.O_WRONLY)
-	os.truncate(fd,0)
-	fileadd=str.encode(code)
-	os.write(fd,fileadd)
-	os.close(fd) 
-	os.chown(path, uid, gid)
-	s = subprocess.run(['gcc','-o',elf,path], stderr=PIPE,)
-	check = s.returncode
-	os.setgid(gid)
-	os.setuid(uid)
-	os.system('id')
-	if check == 0:
-		if chk == '1':
-			r = subprocess.run([elf], input=inp.encode(), stdout=PIPE)
+	try:
+		username = "nobody"
+		pwent = pwd.getpwnam(username)
+		uid = pwent.pw_uid
+		gid = pwent.pw_gid
+		folder = f"code/{name}"
+		path = folder+"/Try.c"
+		elf = folder+"/new"
+		if not os.path.exists(path):
+			os.makedirs(folder, mode=0o777)
+			os.open(path, os.O_CREAT)	
+		fd = os.open(path, os.O_WRONLY)
+		os.truncate(fd,0)
+		fileadd=str.encode(code)
+		os.write(fd,fileadd)
+		os.close(fd) 
+		os.chown(path, uid, gid)
+		s = subprocess.run(['gcc','-o',elf,path], stderr=PIPE,)
+		check = s.returncode
+		os.setgid(gid)
+		os.setuid(uid)
+		os.system('id')
+		if check == 0:
+			if chk == '1':
+				r = subprocess.run([elf], input=inp.encode(), stdout=PIPE)
+			else:
+				r = subprocess.run([elf], stdout=PIPE)
+			return r.stdout.decode("utf-8")
 		else:
-			r = subprocess.run([elf], stdout=PIPE)
-		return r.stdout.decode("utf-8")
-	else:
-		return s.stderr.decode("utf-8")
+			return s.stderr.decode("utf-8")
+	except Exception as e:
+		print(e)
 
 
 if __name__=='__main__':
