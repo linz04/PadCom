@@ -3,23 +3,27 @@
 <head>
 	<title>Online C Compiler</title>
 </head>
+<script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 <body>
 	<form action="" method="post">
 		<label for="title">Title:</label><br>
 		<input id="title" name="title" type="text" value="{{title}}">
 		<label for="notes">Type your notes here:</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label for="output"></label><br>
 
-		<textarea id="notes" name="notes" rows="30" cols="50" style="resize:none" required placeholder="//Enter your notes here.">{{notes}}</textarea><br>
+		<textarea class="ckeditor" id="notes" name="notes" rows="30" cols="50" style="resize:none" required placeholder="//Enter your notes here.">{{notes}}</textarea><br>
 		<input type="submit" name="action" value="Save"></input>
 		<input type="submit" name="action" value="Download"></input><br>
 		<input type="submit" name="action" value="View"></input><br>
 	</form>
 
-	<form action="/api/share" method="post">
-		<label for="share">Share</label><br>
-		<input id="share" name="share" type="text"></input><br>
+	<form action="/share-note/{{uid}}" method="post">
+		<label for="email">Invite:</label><br>
+		<input id="email" name="email" type="text"></input><br>
 		<button type="submit">Share</button>
-	</form><br>
+	</form>
+	{% for message in get_flashed_messages() %}
+	<p><strong>{{ message }}</strong></p>
+	{% endfor %}
 
 		<label for="output">Output:</label><br>
 		<p>{{output}}</p><br>

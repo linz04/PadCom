@@ -11,11 +11,20 @@ import db
 import uuid
 import pdfkit
 
+
+def notes_checker(user_id, uid):
+	mysql = db.connect()
+	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(f"SELECT * FROM notes where user_id LIKE \"%{user_id}%\" AND notes_id = \"{uid}\"")
+	rv = cursor.fetchone()
+	if (rv is not None):
+		return True
+	else:
+		return False
+
 @app.route('/logout')
 def logout():
-	session.pop('loggedin', None)
-	session.pop('id', None)
-	session.pop('fullname', None)
+	session.clear()
 	return redirect(url_for('login'))
 
 @app.route("/api/login", methods = ["GET", "POST"])
@@ -77,8 +86,19 @@ def register_handler():
 			mysql.close()
 		return redirect(url_for('register'))
 
-@app.route('/api/submit',methods=['GET','POST'])
-def submit():
+
+@app.route("/note")
+def note_gen():
+	uid = uuid.uuid4().hex
+	return redirect(url_for('notes_handler', uuid=uid))
+
+@app.route("/code")
+def code_gen():
+	uid = uuid.uuid4().hex
+	return redirect(url_for('notes_handler', uuid=uid))
+
+@app.route('/code/<uuid>',methods=['GET','POST'])
+def code_handler(uuid):
 	if request.method == 'POST':
 
 		code = request.form['code']
@@ -95,10 +115,33 @@ def submit():
 	return render_template('code.html',code=code, input=inp, output=output, check=check)
 
 
-@app.route("/note")
-def note_gen():
-	uid = uuid.uuid4().hex
-	return redirect(url_for('notes_handler', uuid=uid))
+@app.route("/share-note/<uuid>", methods=["POST", "GET"])
+def note_share(uuid):
+	if request.method == "POST":
+		email = request.form['email']
+		mysql = db.connect()
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute("SELECT id FROM user WHERE email=%s", (email,))
+		if cursor.rowcount == 1:
+			#check user already in notes or not
+			rv = cursor.fetchone()
+			cursor.execute(f"SELECT * FROM notes where user_id LIKE \"%{rv['id']}%\" and notes_id = \"{uuid}\"")
+			if cursor.rowcount == 0:
+				cursor.execute("UPDATE notes SET user_id = JSON_ARRAY_INSERT(user_id, '$[0]', %s) where notes_id = %s", (rv['id'], uuid))
+				mysql.commit()
+				cursor.close()
+				mysql.close()
+				msg = f"Success invite user {email}"
+				flash(msg)
+				return redirect(url_for('notes_handler', uuid=uuid))
+			else:
+				flash("User already Invited!")
+				return redirect(url_for('notes_handler', uuid=uuid))
+		else:
+			cursor.close()
+			mysql.close()
+			flash("User Not Found!")
+			return redirect(url_for('notes_handler', uuid=uuid))
 
 @app.route("/note/<uuid>", methods=["POST", "GET"])
 def notes_handler(uuid):
@@ -121,19 +164,28 @@ def notes_handler(uuid):
 			return redirect(url_for('notes_view', uuid=uuid))
 		elif(action == "Download"):
 			return redirect(url_for('notes_download', uuid=uuid))
-		return render_template("note.html", output=out, notes=notes, title=title)
+		return render_template("note.html", output=out, notes=notes, title=title, uid=uuid)
 	else:
+		#check if notes have owner or not
 		mysql = db.connect()
 		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT title, content from notes where notes_id = %s', (uuid, ))
+		cursor.execute('SELECT notes_id, title, content from notes where notes_id = %s', (uuid, ))
 		rv = cursor.fetchone()
-		if(rv is not None):
+		if(rv != None and notes_checker(session['id'], uuid) == True):
 			out = Markup(rv['content'])
-			print(rv, flush=True)
-			return render_template("note.html", output=out, notes=rv['content'], title=rv['title'])
+			cursor.close()
+			mysql.close()
+			return render_template("note.html", output=out, notes=rv['content'], title=rv['title'], uid=rv['notes_id'])
+		elif(rv == None):
+			#if no owner add owner
+			user_id = f"[{int(session['id'])}]"
+			cursor.execute('INSERT INTO notes VALUES (%s, %s, NULL, NULL)', (uuid, user_id, ))
+			mysql.commit()
+			cursor.close()
+			mysql.close()
+			return render_template("note.html", uid=uuid)
 		else:
-			print(rv, flush=True)
-			return render_template("note.html")
+			return redirect(url_for('dashboard'))
 
 @app.route("/view/<uuid>")
 def notes_view(uuid):
