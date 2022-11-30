@@ -19,7 +19,7 @@ def dashboard():
 		if(session['loggedin'] != None):
 			mysql = db.connect()
 			cursor = mysql.cursor()
-			cursor.execute(f"SELECT notes_id, title FROM notes where user_id LIKE \"%{session['id']}%\"")
+			cursor.execute(f"SELECT notes_id, title FROM notes where JSON_CONTAINS(user_id, \"{session['id']}\")")
 			row_headers=[x[0] for x in cursor.description] #this will extract row headers
 			rv = cursor.fetchall()
 			json_data = []
@@ -31,7 +31,8 @@ def dashboard():
 			return render_template("homelogin.html", res=loaded_r)
 		else:
 			return redirect(url_for('home'))
-	except:
+	except Exception as e:
+		print(e)
 		return redirect(url_for('home'))
 
 @app.route("/")
