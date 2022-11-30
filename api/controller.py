@@ -1,5 +1,5 @@
 from config import *
-from flask import render_template, request, redirect, url_for, session, abort, flash
+from flask import render_template, request, redirect, url_for, session, abort, flash, send_file
 from flask_login import login_required
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.utils import secure_filename
@@ -9,7 +9,7 @@ from markupsafe import Markup
 from subprocess import PIPE
 import db
 import uuid
-
+import pdfkit
 
 @app.route('/logout')
 def logout():
@@ -94,41 +94,70 @@ def submit():
 		output=complier_output(code,inp,chk)
 	return render_template('code.html',code=code, input=inp, output=output, check=check)
 
-@app.route("/api/notes", methods=["GET", "POST"])
-def notes_handler():
-	if request.method == "POST":
-		mysql = db.connect()
-		uid = uuid.uuid4().hex
-		title = request.form["title"]
-		notes = request.form['notes']
-		out = Markup(notes)
-		print("Notes: ", out, flush=True)
-		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('INSERT INTO notes VALUES (NULL, %s, %s, %s, 0)', (session['id'], password, fullname, ))
-		return render_template("note.html", output=out, notes=notes, title=title)
 
 @app.route("/note")
 def note_gen():
 	uid = uuid.uuid4().hex
-	return redirect(url_for('note_view', uuid=uid))
+	return redirect(url_for('notes_handler', uuid=uid))
 
 @app.route("/note/<uuid>", methods=["POST", "GET"])
-def note_view(uuid):
+def notes_handler(uuid):
 	if request.method == "POST":
 		mysql = db.connect()
 		title = request.form["title"]
 		notes = request.form['notes']
+		action = request.form['action']
 		user_id = f"[{int(session['id'])}]"
 		out = Markup(notes)
-		print("Notes: ", out, flush=True)
-		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('INSERT INTO notes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, notes, title, notes, ))
-		mysql.commit()
-		cursor.close()
-		mysql.close()
+		print("Action: ", action, flush=True)
+		if(action == "Save"):
+			cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+			cursor.execute('INSERT INTO notes VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE title = %s, content = %s', (uuid, user_id, title, notes, title, notes, ))
+			mysql.commit()
+			cursor.close()
+			mysql.close()
+		elif(action == "View"):
+			print("Masuk")
+			return redirect(url_for('notes_view', uuid=uuid))
+		elif(action == "Download"):
+			return redirect(url_for('notes_download', uuid=uuid))
 		return render_template("note.html", output=out, notes=notes, title=title)
 	else:
-		return render_template("note.html")
+		mysql = db.connect()
+		cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT title, content from notes where notes_id = %s', (uuid, ))
+		rv = cursor.fetchone()
+		if(rv is not None):
+			out = Markup(rv['content'])
+			print(rv, flush=True)
+			return render_template("note.html", output=out, notes=rv['content'], title=rv['title'])
+		else:
+			print(rv, flush=True)
+			return render_template("note.html")
+
+@app.route("/view/<uuid>")
+def notes_view(uuid):
+	mysql = db.connect()
+	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute('SELECT title, content from notes where notes_id = %s', (uuid, ))
+	rv = cursor.fetchone()
+	out = Markup(rv['content'])
+	print(rv, flush=True)
+	return out
+
+@app.route("/download/<uuid>")
+def notes_download(uuid):
+	config = pdfkit.configuration(wkhtmltopdf = "/usr/bin/wkhtmltopdf")
+	url = request.url.replace("download", "view")
+	print(url)
+	path = "notes/"+uuid+".pdf"
+	print(path)
+	pdfkit.from_url(url, path, verbose=True, configuration = config)
+	print("="*50)
+	return send_file(path, as_attachment=True)
+	#return "test"
+
+
 
 
 def complier_output(code,inp,chk):

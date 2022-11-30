@@ -7,13 +7,22 @@
 	<form action="" method="post">
 		<label for="title">Title:</label><br>
 		<input id="title" name="title" type="text" value="{{title}}">
-		<label for="notes">Type your notes here:</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label for="output">This is the output.</label><br>
+		<label for="notes">Type your notes here:</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label for="output"></label><br>
 
-		<textarea id="notes" name="notes" rows="30" cols="50" style="resize:none" required placeholder="//Enter your notes here.">{{notes}}</textarea>
-		<p>Test {{output}}</p><br>
-		
-		
-		<button type="submit">View</button>
-</form>
+		<textarea id="notes" name="notes" rows="30" cols="50" style="resize:none" required placeholder="//Enter your notes here.">{{notes}}</textarea><br>
+		<input type="submit" name="action" value="Save"></input>
+		<input type="submit" name="action" value="Download"></input><br>
+		<input type="submit" name="action" value="View"></input><br>
+	</form>
+
+	<form action="/api/share" method="post">
+		<label for="share">Share</label><br>
+		<input id="share" name="share" type="text"></input><br>
+		<button type="submit">Share</button>
+	</form><br>
+
+		<label for="output">Output:</label><br>
+		<p>{{output}}</p><br>
+	
 </body>
 </html>

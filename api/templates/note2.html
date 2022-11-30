@@ -34,29 +34,16 @@
       <h1>Manajemen Proyek Perangkat Lunak</h1> <!--tergantung title notes-->
     </div>
     <div class="box-option">
+    </div>
+    <form action="" method="post">
+      <div class="box-notes">
+        <textarea class="ckeditor" id="notes" name="editor1" style=" max-width: 800px; " placeholder="Write here..."></textarea>
       <button type="submit" id="submit" name="submit" class="button-submit"><b>SAVE</b></button>
-      <button onclick="muncul()" id="share" class="iconify" data-inline="false" data-icon="mdi:account-multiple-plus" style="font-size: 30px; float:right; margin-right: 30px; cursor: pointer; color: #000000;"></button>
-      <button class="iconify" data-inline="false" data-icon="ic:outline-file-download" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
+            <button onclick="muncul()" id="share" class="iconify" data-inline="false" data-icon="mdi:account-multiple-plus" style="font-size: 30px; float:right; margin-right: 30px; cursor: pointer; color: #000000;"></button>
+      <button onclick="download()" class="iconify" data-inline="false" data-icon="ic:outline-file-download" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
       <button onclick="on()" class="iconify" data-inline="false" data-icon="mingcute:delete-2-line" style="font-size: 30px; float:right; margin-right: 20px; cursor: pointer; color: #000000;"></button>
-    </div>
-    <div class="box-notes">
-      <textarea id="notes" name="editor1" style=" max-width: 800px; " placeholder="Write here..."></textarea>
-      <script>
-        CKEDITOR.replace( 'editor1' );
-        config.resize_enabled = false;
-        config.removePlugins = 'resize';
-      </script>
-    </div>
-    <!--<div class="box-code">
-        <p>Your Note</p>
-    </div>
-      <form>
-        <div class="code">
-          <textarea type="text" id="code" name="code1" style="font-family: 'consolas'; font-size: 20px; padding: 20px; width: 1200px;height:750px;border-radius: 0px 0px 5px 5px;" placeholder="Write here..."></textarea>
-          <script> CKEDITOR.replace( 'code1' ); </script>
-        </div>
-      </form>
-    </div> -->
+      </div>
+    </form>
     <div id="overlay">
         <div class="share-overlay">
           <p class="collab">Add Collaborator</p>
@@ -69,7 +56,7 @@
         <div class="delete-overlay">
           <div class="sure-delete">You are about sure to delete this code.
           <p>Are you sure?</p></div>
-        <form><button class="yes" id="yes-delete"><b>YES</b></button></form>
+          <button onclick="hapus()" class="yes" id="yes-delete"><b>YES</b></button>
           <button onclick="off()" class="no" id="no-delete"><b>NO</b></button>
         </div>
     </div>            
@@ -119,5 +106,26 @@
       document.getElementById("overlay1").style.display = "none";
     }
   </script>
+  <script>
+    function hapus () {
+      var form = document.createElement('form');
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', 'hapus');
+      form.style.display = 'hidden';
+      document.body.appendChild(form)
+      form.submit();
+    }
+  </script>
+  <script>
+    function download () {
+      var form = document.createElement('form');
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', 'download');
+      form.style.display = 'hidden';
+      document.body.appendChild(form)
+      form.submit();
+    }
+  </script>
+
   </body>
 </html>
