@@ -147,11 +147,13 @@ header {
   resize:none;
   background:var(--third-color); 
   outline: none;
+  margin-left: 30px;
 }
 #output{
   resize:none;
   background:var(--third-color); 
   outline: none;
+  margin-right: 30px;
 }
 #txtinput{
   resize:none;

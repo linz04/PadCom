@@ -22,3 +22,7 @@ def home():
 @app.route("/code")
 def code():
 	return render_template("code.html")
+
+@app.route("/code2")
+def code2():
+	return render_template("compiler.html")
