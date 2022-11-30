@@ -1,5 +1,7 @@
 FROM python:3.8.5
 
+RUN apt-get update
+RUN apt-get install wkhtmltopdf -y
 WORKDIR /app
 ENV FLASK_APP=main.py
 ENV FLASK_ENV=development
