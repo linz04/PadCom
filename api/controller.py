@@ -16,7 +16,7 @@ import pwd
 def notes_checker(user_id, uid):
 	mysql = db.connect()
 	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-	cursor.execute(f"SELECT * FROM notes where user_id LIKE \"%{user_id}%\" AND notes_id = \"{uid}\"")
+	cursor.execute(f"SELECT * FROM notes where JSON_CONTAINS(user_id, \"{user_id}\") AND notes_id = \"{uid}\"")
 	rv = cursor.fetchone()
 	if (rv is not None):
 		return True
@@ -26,7 +26,7 @@ def notes_checker(user_id, uid):
 def codes_checker(user_id, uid):
 	mysql = db.connect()
 	cursor = mysql.cursor(MySQLdb.cursors.DictCursor)
-	cursor.execute(f"SELECT * FROM codes where user_id LIKE \"%{user_id}%\" AND codes_id = \"{uid}\"")
+	cursor.execute(f"SELECT * FROM codes where JSON_CONTAINS(user_id, \"{user_id}\") AND codes_id = \"{uid}\"")
 	rv = cursor.fetchone()
 	if (rv is not None):
 		return True
