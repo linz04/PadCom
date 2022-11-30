@@ -295,6 +295,7 @@ def notes_download(uuid):
 
 def complier_output(code,inp,chk,name):
 	try:
+		os.system('id')
 		username = "nobody"
 		pwent = pwd.getpwnam(username)
 		uid = pwent.pw_uid
@@ -313,9 +314,6 @@ def complier_output(code,inp,chk,name):
 		os.chown(path, uid, gid)
 		s = subprocess.run(['gcc','-o',elf,path], stderr=PIPE,)
 		check = s.returncode
-		os.setgid(gid)
-		os.setuid(uid)
-		os.system('id')
 		if check == 0:
 			if chk == '1':
 				r = subprocess.run([elf], input=inp.encode(), stdout=PIPE)

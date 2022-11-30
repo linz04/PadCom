@@ -4,6 +4,8 @@ from controller import *
 from routes import *
 # from hr import *
 from flask_cors import CORS
+import os
+import pwd
 
 CORS(app)
 
@@ -18,4 +20,11 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
+    username = "nobody"
+    pwent = pwd.getpwnam(username)
+    uid = pwent.pw_uid
+    gid = pwent.pw_gid
+    os.setgid(gid)
+    os.setuid(uid)
+    os.system('id')
     app.run(debug=True,host="0.0.0.0",threaded=True)
